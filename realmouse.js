@@ -1,7 +1,7 @@
 var ctx, color = "#123",
     top_offset = 44;
 
-queue().defer(d3.csv, "data/ko1_c.csv").await(lets_draw);
+queue().defer(d3.csv, "https://raw.githubusercontent.com/wjpjw/realmouse/master/data/ko1_c.csv").await(lets_draw);
 
 function inspect(msg, object) {
     console.log(msg + JSON.stringify(object, null, 4));
@@ -13,7 +13,6 @@ function lets_draw(error, data_csv) {
     ctx = document.getElementById("canvas").getContext("2d");
     ctx.strokeStyle = color;
     ctx.lineWidth = 1;
-    console.log(data_csv.length);
     var prevline = data_csv[0];
     console.log(prevline);
     data_csv.forEach(function(element) {
