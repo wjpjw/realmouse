@@ -1,60 +1,42 @@
-var ctx, color = "#123",
-    top_offset = 44;
-
 queue().defer(d3.csv, "https://raw.githubusercontent.com/wjpjw/realmouse/master/data/ko1_c.csv").await(lets_draw);
-
-function inspect(msg, object) {
-    console.log(msg + JSON.stringify(object, null, 4));
-}
 
 function lets_draw(error, data_csv) {
     var canvas = '<canvas id="canvas" width="' + 3500 + '" height="' + 1800 + '"></canvas>';
     $("#content").html(canvas);
-    ctx = document.getElementById("canvas").getContext("2d");
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 1;
+    var ctx = document.getElementById("canvas").getContext("2d");
+    ctx.strokeStyle = "rgba(255,12,12,0.1)";
+    ctx.lineWidth = 30;
     var prevline = data_csv[0];
-    console.log(prevline);
-    data_csv.forEach(function(element) {
+    data_csv.forEach(function(curline) {
         ctx.beginPath();
-        // ctx.moveTo();
-        //  ctx.lineTo(1000, 1000);
-        //  ctx.stroke();
+        ctx.strokeStyle = "rgba(255,252,148,0.02)";
+        ctx.lineWidth = 600;
+        ctx.moveTo(100 * prevline.x, 100 * prevline.y);
+        ctx.lineTo(100 * curline.x, 100 * curline.y);
+        ctx.stroke();
+
+
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(255,12,12,0.02)";
+        ctx.lineWidth = 300;
+        ctx.moveTo(100 * prevline.x, 100 * prevline.y);
+        ctx.lineTo(100 * curline.x, 100 * curline.y);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(255,108,12,0.01)";
+        ctx.lineWidth = 100;
+        ctx.moveTo(100 * prevline.x, 100 * prevline.y);
+        ctx.lineTo(100 * curline.x, 100 * curline.y);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(165,0,0,0.9)";
+        ctx.lineWidth = 1;
+        ctx.moveTo(100 * prevline.x, 100 * prevline.y);
+        ctx.lineTo(100 * curline.x, 100 * curline.y);
+        ctx.stroke();
+        prevline = curline;
     });
 
-    $("#canvas").drawMouse();
 }
-
-
-
-
-
-
-
-// not very relevant: hand drawing feature
-$.fn.drawMouse = function() {
-    var clicked = false;
-    var start = function(e) {
-        clicked = true;
-        ctx.beginPath();
-        ctx.strokeStyle = "#562";
-        ctx.lineWidth = 6;
-        x = e.pageX;
-        y = e.pageY - top_offset;
-        ctx.moveTo(x, y);
-    };
-    var move = function(e) {
-        if (clicked) {
-            x = e.pageX;
-            y = e.pageY - top_offset;
-            ctx.lineTo(x, y);
-            ctx.stroke();
-        }
-    };
-    var stop = function(e) {
-        clicked = false;
-    };
-    $(this).on("mousedown", start);
-    $(this).on("mousemove", move);
-    $(window).on("mouseup", stop);
-};
